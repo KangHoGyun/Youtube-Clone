@@ -3,7 +3,6 @@ import { Typography, Button, Form, message, Input, Icon } from "antd";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
 import { useSelector } from "react-redux";
-import { response } from "express";
 //import TextArea from "antd/lib/input/TextArea";
 
 const { TextArea } = Input;
@@ -80,6 +79,9 @@ function VideoUploadPage(props) {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    /*if (user.userData && !user.userData.isAuth) {
+      return alert('Please Log in First')
+    }*/
     const variables = {
       writer: user.userData._id,
       title: VideoTitle,
@@ -92,6 +94,7 @@ function VideoUploadPage(props) {
     };
     Axios.post("/api/video/uploadVideo", variables).then((response) => {
       if (response.data.success) {
+        //console.log(response.data.success);
         message.success("성공적으로 업로드를 했습니다.");
         setTimeout(() => {
           props.history.push("/");
@@ -172,7 +175,7 @@ function VideoUploadPage(props) {
         </select>
         <br />
         <br />
-        <Button type="primary" size="large" onClick={onsubmit}>
+        <Button type="primary" size="large" onClick={onSubmit}>
           Submit
         </Button>
       </Form>
