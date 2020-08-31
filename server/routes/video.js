@@ -44,15 +44,6 @@ router.post("/uploadfiles", (req, res) => {
   });
 });
 
-router.post("/getVideoDetail", (req, res) => {
-  Video.findOne({ _id: req.body.videoId })
-    .populate("writer")
-    .exec((err, videoDetail) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).json({ success: true, videoDetail });
-    });
-});
-
 router.post("/uploadVideo", (req, res) => {
   //비디오 정보들을 저장한다.
 
@@ -61,6 +52,15 @@ router.post("/uploadVideo", (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({ success: true });
   }); //몽고DB에 저장.
+});
+
+router.post("/getVideo", (req, res) => {
+  Video.findOne({ _id: req.body.videoId })
+    .populate("writer")
+    .exec((err, video) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, video });
+    });
 });
 
 router.get("/getVideos", (req, res) => {
