@@ -26,9 +26,9 @@ function VideoDetailPage(props) {
           <div style={{ width: "100%", padding: "3rem 4rem" }}>
             <video
               style={{ width: "100%" }}
-              src={`https://localhost:5000/${Video.filePath}`}
+              src={`http://localhost:5000/${Video.filePath}`}
               controls
-            />
+            ></video>
 
             <List.Item
               actions={[

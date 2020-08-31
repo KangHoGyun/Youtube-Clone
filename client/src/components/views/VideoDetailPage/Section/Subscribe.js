@@ -2,30 +2,29 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 function Subscribe(props) {
+  const userTo = props.userTo;
+  const userFrom = props.userFrom;
   const [SubscribeNumber, setSubscribeNumber] = useState(0);
   const [Subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
-    let variable = { userTo: props.userTo };
-    Axios.post("/api/subscribe/subscribeNuber", variable).then((response) => {
-      if (response.data.success) {
-        setSubscribeNumber(response.data.subscribeNuber);
-      } else {
-        alert("구독자 수 정보를 받아오지 못 했습니다.");
-      }
-    });
-
-    let subscribedVariable = {
-      userTo: props.userTo,
-      userFrom: localStorage.getItem("userId"),
-    };
-
-    Axios.post("/api/subscribe/subscribed", subscribedVariable).then(
+    const subscribeNumberVariables = { userTo: userTo, userFrom: userFrom };
+    Axios.post("/api/subscribe/subscribeNumber", subscribeNumberVariables).then(
       (response) => {
         if (response.data.success) {
-          setSubscribed(response.data.subscribed);
+          setSubscribeNumber(response.data.subscribeNumber);
         } else {
-          alert("정보를 받아오지 못했습니다.");
+          alert("Failed to get subscriber Number");
+        }
+      }
+    );
+
+    Axios.post("/api/subscribe/subscribed", subscribeNumberVariables).then(
+      (response) => {
+        if (response.data.success) {
+          setSubscribed(response.data.subcribed);
+        } else {
+          alert("Failed to get Subscribed Information");
         }
       }
     );
@@ -66,6 +65,7 @@ function Subscribe(props) {
   return (
     <div>
       <button
+        onClick={onSubscribe}
         style={{
           backgroundColor: `${Subscribed ? "#AAAAAA" : "#CC0000"}`,
           borderRadius: "4px",
@@ -75,7 +75,6 @@ function Subscribe(props) {
           fontSize: "1rem",
           textTransform: "uppercase",
         }}
-        onClick={onSubscribe}
       >
         {SubscribeNumber} {Subscribed ? "Subscribed" : "Subscribe"}
       </button>
