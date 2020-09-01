@@ -54,27 +54,25 @@ router.post("/uploadVideo", (req, res) => {
   }); //몽고DB에 저장.
 });
 
-router.post("/getSubscriptionVideo", (req, res) => {
+router.post("/getSubscriptionVideos", (req, res) => {
   // 자신의 아이디를 가지고 구독하는 사람들을 찾는다.
-  Subscriber.find({ userFrom: req.body.userFrom }).exec(
-    (err, subscriberInfo) => {
-      if (err) return res.status(400).send(err);
+  Subscriber.find({ userFrom: req.body.userFrom }).exec((err, subscribers) => {
+    if (err) return res.status(400).send(err);
 
-      let subscriberUser = [];
+    let subscribedUser = [];
 
-      subscriberInfo.map((subscriber, i) => {
-        subscriberUser.push(subscriber.userTo);
-      });
-    }
-  );
-
-  // 찾은 사람들의 비디오를 가지고 온다.
-  Video.find({ writer: { $in: subscriberUser } })
-    .populate("writer")
-    .exec((err, videos) => {
-      if (err) return res.status(400).send(err);
-      res.status(200).json({ success: true, videos });
+    subscribers.map((subscriber, i) => {
+      subscribedUser.push(subscriber.userTo);
     });
+
+    // 찾은 사람들의 비디오를 가지고 온다.
+    Video.find({ writer: { $in: subscribedUser } })
+      .populate("writer")
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos });
+      });
+  });
 });
 
 router.post("/getVideo", (req, res) => {

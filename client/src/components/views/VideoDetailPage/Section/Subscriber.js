@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
-function Subscribe(props) {
+function Subscriber(props) {
   const userTo = props.userTo;
   const userFrom = props.userFrom;
   const [SubscribeNumber, setSubscribeNumber] = useState(0);
@@ -82,4 +82,4 @@ function Subscribe(props) {
   );
 }
 
-export default Subscribe;
+export default Subscriber;

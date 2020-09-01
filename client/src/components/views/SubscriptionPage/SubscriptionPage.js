@@ -17,7 +17,6 @@ function SubscriptionPage() {
     Axios.post("/api/video/getSubscriptionVideos", subscriptionVariables).then(
       (response) => {
         if (response.data.success) {
-          console.log(response.data);
           setVideo(response.data.videos);
         } else {
           alert("비디오 가져오기를 실패 했습니다.");
@@ -70,7 +69,7 @@ function SubscriptionPage() {
         />
         <span>{video.writer.name} </span>
         <br />
-        <span style={{ marginLeft: "3rem" }}> {video.views}</span>-{" "}
+        <span style={{ marginLeft: "3rem" }}> {video.views}</span> -
         <span> {moment(video.createdAt).format("MMM Do YY")} </span>
       </Col>
     );
@@ -78,7 +77,7 @@ function SubscriptionPage() {
 
   return (
     <div style={{ width: "85%", margin: "3rem auto" }}>
-      <Title level={2}> Recommended </Title>
+      <Title level={2}> Subscribed Videos </Title>
       <hr />
 
       <Row gutter={16}>{renderCards}</Row>
