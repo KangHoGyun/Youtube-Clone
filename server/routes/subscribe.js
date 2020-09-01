@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Subscriber } = require("../models/Subscriber");
-const { auth } = require("../middleware/auth");
 
 //=================================
 //             Subscribe
@@ -10,7 +9,9 @@ const { auth } = require("../middleware/auth");
 router.post("/subscribeNumber", (req, res) => {
   Subscriber.find({ userTo: req.body.userTo }).exec((err, subscribe) => {
     if (err) return res.status(400).send(err);
-    res.status(200).json({ success: true, subscribeNumber: subscribe.length });
+    return res
+      .status(200)
+      .json({ success: true, subscribeNumber: subscribe.length });
   });
 });
 
@@ -34,15 +35,16 @@ router.post("/unSubscribe", (req, res) => {
     userFrom: req.body.userFrom,
   }).exec((err, doc) => {
     if (err) return res.status(400).json({ success: false, err });
-    res.status(200).json({ success: true, doc });
+    return res.status(200).json({ success: true, doc });
   });
 });
 
 router.post("/subscribe", (req, res) => {
   const subscribe = new Subscriber(req.body);
   subscribe.save((err, doc) => {
+    //save to DB
     if (err) return res.json({ success: false, err });
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   });
 });
 
